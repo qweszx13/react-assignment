@@ -1,2 +1,2 @@
-# ReactAssignment
-React with redux
+#Github API を使用した簡単な掲示板です
+##足りない部分も多くありますのでぜひよろしくお願い申し上げます。
