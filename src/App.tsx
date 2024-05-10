@@ -1,39 +1,49 @@
-import store from "./ contexts/store";
+import { useEffect, useState } from "react";
+import store from "./contexts/store";
+import { testOctokit, useGithubData } from "./services/githubApi";
 
 function App() {
+  
+  useEffect(()=>{
+    const test = async() =>await testOctokit(issuePageNumberValue);
+    console.log(test);
+  },[])
 
-  const test = async ()=>{
-    //Paging
-    const response = await fetch("https://api.github.com/repos/facebook/react/issues?page=1/issues?state=open");
-    const jsonData = await response.json();
-    console.log(jsonData);
-  }
+  const [orgValue, setOrgValue] = useState<string>("");
+  const [repoValue, setRepoValue] = useState<string>("");
+  const [issuePageNumberValue, setIssuePageNumber] = useState<number>(1);
 
-  //store.dispatch()
+  const nanIsOne = (value:string) :number => isNaN(parseInt(value)) || parseInt(value) <= 0 ? 1 : parseInt(value);
   
   return (
-    <div className="App">
-     <body>
-      <button onClick={()=>{test()}}></button>
+    <div style={{textAlign:"center"}}>
       <header>
-        <h1>Web</h1>
-        Hello Web
-      </header>
-      <nav>
-        <ol>
-          <li><a href="1.html">HTML</a></li>
-          <li><a href="2.css">CSS</a></li>
-        </ol>
-      </nav>
-      <article>
-        <ul>
-          <li><a href="/create">create</a></li>
-          <li><input type="button" value={"delete"}></input></li>
-        </ul>
-        <h2>HTML</h2>
-        HTML is...
-      </article> 
-     </body>
+        <form>
+          <label style={{margin:"0px 10px"}}>
+            Org : {repoValue}
+            <input placeholder="Org" type="text" style={{margin:"0px 10px"}} onChange={(e)=>setOrgValue(e.target.value)}/>
+          </label>
+          <label >
+            Repo : {orgValue}
+            <input placeholder="Repo" type="text" style={{margin:"0px 10px"}} onChange={(e)=>setRepoValue(e.target.value)}/>
+          </label>
+          <button>
+            Load Repo
+          </button>
+        </form>
+        <form>
+          <label>
+            Issue Page :{issuePageNumberValue}
+          <input placeholder="Issues Page ex)1,2,3" type="number" style={{margin:"0px 10px"}} onChange={(e)=>setIssuePageNumber(nanIsOne(e.target.value))}/>
+          </label>
+          <button>
+            Jump to Page
+          </button>
+        </form>
+      </header> 
+      <body>
+        
+      </body>
     </div>
   );
 }
