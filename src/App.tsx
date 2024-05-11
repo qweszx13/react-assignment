@@ -1,17 +1,26 @@
 import { useEffect, useState } from "react";
 import store from "./contexts/store";
-import { testOctokit, useGithubData } from "./services/githubApi";
+import { testOctokit } from "./services/githubApi";
 
 function App() {
-  
-  useEffect(()=>{
-    const test = async() =>await testOctokit(issuePageNumberValue);
-    console.log(test);
-  },[])
 
+  const [issuePageNumberValue, setIssuePageNumber] = useState<number>(1);
   const [orgValue, setOrgValue] = useState<string>("");
   const [repoValue, setRepoValue] = useState<string>("");
-  const [issuePageNumberValue, setIssuePageNumber] = useState<number>(1);
+  const [userData,setUserData] = useState<any>([]);
+  const [headerLink,setHeaderLink] = useState<string|undefined>();
+
+  
+
+  const setData = async () => {
+    const result = await testOctokit(issuePageNumberValue);
+    setUserData([...result.data]);
+    setHeaderLink(result.headers.link);
+  }
+  
+  useEffect(()=>{
+      setData();
+  },[])
 
   const nanIsOne = (value:string) :number => isNaN(parseInt(value)) || parseInt(value) <= 0 ? 1 : parseInt(value);
   
@@ -36,14 +45,25 @@ function App() {
             Issue Page :{issuePageNumberValue}
           <input placeholder="Issues Page ex)1,2,3" type="number" style={{margin:"0px 10px"}} onChange={(e)=>setIssuePageNumber(nanIsOne(e.target.value))}/>
           </label>
-          <button>
+          <button onClick={()=>{
+            console.log(userData);
+          }}>
             Jump to Page
           </button>
         </form>
-      </header> 
-      <body>
-        
-      </body>
+      </header>
+      <div>
+          {userData.map((data: { id :string; user :{avatar_url :string, login :string} })=>{
+            return (
+            <div>
+              <img src={data.user.avatar_url} alt={+"ID is "+data.user.login} style={{width:"40px",height:"40px",borderRadius:"20px"}}/>
+              <p>
+                {data.user.login}
+              </p>
+            </div>
+            )
+          })}
+      </div>
     </div>
   );
 }
