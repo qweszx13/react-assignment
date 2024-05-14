@@ -1,21 +1,30 @@
 import { Octokit } from 'octokit';
-import { useState,useEffect } from 'react'
 
 const octokit = new Octokit({
   auth: process.env.REACT_APP_GITHUB_API
 })
 
 // Octokit-Libraries使用
-export const testOctokit = async (page :number) =>{
+export const getGithubFacebookList = async (page :number) =>{
   const result = await octokit.request("GET /repos/{owner}/{repo}/issues", {
     owner: "facebook",
     repo: "react",
     page:page,
-    per_page: 25
+    per_page: 25,
   });
   
-  console.log(result);
+  console.log(result); 
   return result;
+}
+
+export const getGithubFacebookInfo = async () => {
+  const result = await octokit.request("GET /repos/{owner}/{repo}",{
+    owner: "facebook",
+    repo: "react"
+  })
+
+  console.log(result);
+  return result
 }
 
 // tokenなしにAPI読んだ時のコード
