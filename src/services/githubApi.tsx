@@ -4,7 +4,7 @@ const octokit = new Octokit({
   auth: process.env.REACT_APP_GITHUB_API
 })
 
-// Octokit-Libraries使用
+// Octokit-Libraries-Owner,Repository,Page設定し使う場合
 export const getGithubFacebookList = async (page :number) =>{
   const result = await octokit.request("GET /repos/{owner}/{repo}/issues", {
     owner: "facebook",
@@ -17,6 +17,8 @@ export const getGithubFacebookList = async (page :number) =>{
   return result;
 }
 
+
+
 export const getGithubFacebookInfo = async () => {
   const result = await octokit.request("GET /repos/{owner}/{repo}",{
     owner: "facebook",
@@ -26,18 +28,41 @@ export const getGithubFacebookInfo = async () => {
   console.log(result);
   return result
 }
+// Octokit-Libraries-Owner,Repository,Pageを引数として使った場合
+export const getGithubIssueList = async (owner :string, repo :string, page :number) =>{
+  const response = await octokit.request("GET /repos/{owner}/{repo}/issues", {
+    owner: owner,
+    repo: repo,
+    page:page,
+    per_page: 25,
+  }).catch((error)=>{
+    if(error.response.status === 404){
+      console.log("Page Not Found Please Check Owner : "+owner +",Repo : "+ repo )
+    }
+  })
 
-// tokenなしにAPI読んだ時のコード
-// const getGithubData = async (pageNum: number)=>{
-//   const response: Response = await fetch("https://api.github.com/repos/facebook/react/issues?page="+pageNum+"/issues?state=open");
-//   const jsonData: [] = await response.json();
-//   return jsonData;
-// }
+  if(typeof response === "undefined" ){
+    console.log("void"); 
+  }else{
+    return response;
+  }
+}
 
-// export const useGithubData = (pageNum: number) => {
-//   const [data,setData] = useState([])
-//   useEffect(() => {
-//     getGithubData(pageNum).then(jsonData => setData(jsonData));
-//   },[])
-//   return data
-// }
+export type GithubIssueInterface = Awaited<ReturnType<typeof getGithubFacebookList>>["data"]
+
+export const getGithubIssueInfo = async (owner :string, repo :string) => {
+  const response = await octokit.request("GET /repos/{owner}/{repo}",{
+    owner: owner,
+    repo: repo
+  }).catch((error)=>{
+    if(error.response.status === 404){
+      console.log("Page Not Found Please Check Owner : "+owner +",Repo : "+ repo )
+    }
+  })
+
+  if(typeof response === "undefined" ){
+    console.log("void"); 
+  }else{
+    return response;
+  }
+}

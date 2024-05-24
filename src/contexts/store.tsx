@@ -1,14 +1,15 @@
-import { createStore } from "redux";
+import { configureStore } from "@reduxjs/toolkit";
+import infoReducer from "./infoSlice";
+import apiParameterReducer from "./apiParameterSlice";
 
-export default createStore(function(state, action){
-  if(state === undefined){
-    return {data: []}
+const store = configureStore({
+  reducer: {
+    info:infoReducer,
+    apiParameter:apiParameterReducer,
   }
-
-  switch(action.type){
-    case 'SETDATA':
-      return console.log("SetData");
-  }
-
-  return state;
 })
+
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
+
+export default store;
