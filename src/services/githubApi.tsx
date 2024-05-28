@@ -1,5 +1,7 @@
 import { Octokit } from 'octokit';
 
+export const LIST_ITEM_COUNT = 25;
+
 const octokit = new Octokit({
   auth: process.env.REACT_APP_GITHUB_API
 })
@@ -10,14 +12,12 @@ export const getGithubFacebookList = async (page :number) =>{
     owner: "facebook",
     repo: "react",
     page:page,
-    per_page: 25,
+    per_page: LIST_ITEM_COUNT,
   });
   
   console.log(result); 
   return result;
 }
-
-
 
 export const getGithubFacebookInfo = async () => {
   const result = await octokit.request("GET /repos/{owner}/{repo}",{
@@ -34,7 +34,7 @@ export const getGithubIssueList = async (owner :string, repo :string, page :numb
     owner: owner,
     repo: repo,
     page:page,
-    per_page: 25,
+    per_page: LIST_ITEM_COUNT,
   }).catch((error)=>{
     if(error.response.status === 404){
       console.log("Page Not Found Please Check Owner : "+owner +",Repo : "+ repo )
@@ -66,3 +66,5 @@ export const getGithubIssueInfo = async (owner :string, repo :string) => {
     return response;
   }
 }
+
+export type GithubIssueInfoInterface = Awaited<ReturnType<typeof getGithubIssueInfo>>;

@@ -1,9 +1,22 @@
 import { useState, useEffect } from "react";
-import styled from "styled-components";
+import styles from "../styles/scss/pagination.module.scss";
+import { RootState } from "../contexts/store";
+import { useDispatch, useSelector } from "react-redux";
+import { LIST_ITEM_COUNT } from "../services/githubApi";
+import { type GithubIssueInfoInterface } from '../services/githubApi';
+import { setPageParameter } from "../contexts/apiParameterSlice";
 
+export default function Pagination() {
 
-export default function Pagination(totalItems :number, itemCountPerPage :number, pageCount :number, currentPage :number ) {
-  const totalPages = Math.ceil(totalItems / itemCountPerPage);
+  const issueInfos :GithubIssueInfoInterface = useSelector((state :RootState) => state.info.value);
+  const issuePage :number = useSelector((state :RootState)=> state.apiParameter.page);
+
+  const [totalItems,setTotalItems] = useState(1);
+  const itemCountPerPage :number = LIST_ITEM_COUNT;//ページに表すItemの数
+  const pageCount :number = 10;//表示するページ数
+  const currentPage = issuePage;//現在ページ
+
+  const totalPages = totalItems !== 0 ? Math.ceil(totalItems / itemCountPerPage) : 0 //全体ページ数
   const [start, setStart] = useState(1);
   const noPrev = start === 1;
   const noNext = start + pageCount - 1 >= totalPages;
@@ -11,54 +24,39 @@ export default function Pagination(totalItems :number, itemCountPerPage :number,
   useEffect(() => {
     if (currentPage === start + pageCount) setStart((prev) => prev + pageCount);
     if (currentPage < start) setStart((prev) => prev - pageCount);
-  }, [currentPage, pageCount, start]);
+    setTotalItems(issueInfos?.data !== undefined ? issueInfos.data.open_issues_count : 1);
+  }, [currentPage, pageCount, start, issueInfos]);
 
-  
-
-  const StyledUl = styled.ul`
-    listStyle : "none",
-  `
-
-  const StyledLi = styled.ul`
-    float: left;
-    height: 25px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  ` 
-  const StyledWrapperDiv = styled.div`
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: "30px",
-    color: "#888",
-    fontSize: "14px"
-  `
-  const
+  const dispatch = useDispatch();
 
   return (
-    <StyledWrapperDiv>
-      <ul style={ul}>
+    <div className={styles.wrapper}>
+      <ul>
         <li className={`${styles.move} ${noPrev && styles.invisible}`}>
-          <a href={`?page=${start - 1}`}>이전</a>
+          <p onClick={()=>{
+            dispatch(setPageParameter(start - 1))
+          }}>前</p>
         </li>
         {[...Array(pageCount)].map((a, i) => (
-          <>
+          <div className="page-list-div" key={"page"+ i}>
             {start + i <= totalPages && (
               <li key={i}>
-                <a className={`${styles.page} ${currentPage === start + i && styles.active}`}
-                  href={`?page=${start + i}`}>
+                <p className={`${styles.page} ${currentPage === start + i && styles.active}`}
+                  onClick={()=>{
+                    dispatch(setPageParameter(start + i))
+                    }}>
                   {start + i}
-                </a>
+                </p>
               </li>
             )}
-          </>
+          </div>
         ))}
         <li className={`${styles.move} ${noNext && styles.invisible}`}>
-          <a href={`?page=${start + pageCount}`}>다음</a>
+          <p onClick={()=>{
+            dispatch(setPageParameter(start + pageCount));
+          }}>次</p>
         </li>
       </ul>
-    </StyledWrapperDiv>
+    </div>
   );
 }

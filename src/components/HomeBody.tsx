@@ -1,34 +1,35 @@
 import { useEffect, useState } from "react";
-import { type GithubIssueInterface } from "../services/githubApi";
 import { getGithubIssueInfo,getGithubIssueList } from "../services/githubApi";
-import { setInfo } from "../contexts/infoSlice";
+import { setList } from "../contexts/listSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { type RootState } from "../contexts/store";
+import Pagination from "./Pagination";
+import { setInfo } from "../contexts/infoSlice";
 
 export default function HomeBody() {
 
-  const [openIssuesCount, setOpenIssuesCount] = useState<number>(0);
+  const dispatch = useDispatch();
+
+  const [openIssuesCount, setOpenIssuesCount] = useState(0);
 
   const apiParameter = useSelector((state :RootState) => state.apiParameter)
 
-//repo :string, owner :string,page :number
   const setData = async () => {
     const infoResult = await getGithubIssueInfo(apiParameter.org,apiParameter.repo);
     const listResult = await getGithubIssueList(apiParameter.org,apiParameter.repo,apiParameter.page);
+
     if(infoResult !== undefined && listResult !== undefined){
       setOpenIssuesCount(infoResult.data.open_issues_count);
-      console.log([...listResult.data]);
-      dispatch(setInfo([...listResult.data]));
+      dispatch(setList([...listResult.data]));
+      dispatch(setInfo(infoResult))
     }
   }
 
-const dispatch = useDispatch();
+  useEffect(() => {
+    setData();
+  }, [apiParameter.page,apiParameter.org,apiParameter.repo])
 
-useEffect(() => {
-  setData();
-}, [apiParameter.page,apiParameter.org,apiParameter.repo])
-
-const issueInfos = useSelector((state: RootState) => state.info.value);
+  const issueInfoes = useSelector((state: RootState) => state.list.value);
 
   return (
     <div>
@@ -37,7 +38,7 @@ const issueInfos = useSelector((state: RootState) => state.info.value);
           {openIssuesCount} Open issues for {apiParameter.org}/{apiParameter.repo}
         </h1>
       </div>
-      {issueInfos.map((data) => {
+      {issueInfoes.map((data) => {
         return (
           <div key={`list-${data.id}`} style={{ width: "780px", height: "170px", padding: "16px 8px", display: "flex", borderBottom: "1px solid #E2E2E2" }}>
             <a href="##" style={{ textAlign: "center", width: "10%", color: "#9C9C9C" }}>
@@ -68,6 +69,7 @@ const issueInfos = useSelector((state: RootState) => state.info.value);
           </div>
         )
       })}
+      <Pagination></Pagination>
     </div>
   )
 }

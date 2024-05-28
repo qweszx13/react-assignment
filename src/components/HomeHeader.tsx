@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { getGithubIssueList,getGithubIssueInfo } from "../services/githubApi";
 import { useDispatch } from "react-redux";
 import { setRepoParameter,setPageParameter } from "../contexts/apiParameterSlice";
 
@@ -14,19 +13,6 @@ export default function HomeHeader(){
 
   function loadRepoOnclickEvent(orgValue :string, repoValue :string) :void{
     dispatch(setRepoParameter({org:orgValue,repo:repoValue}));
-
-    const issueList = async () => {
-      let result = await getGithubIssueList(orgValue, repoValue, 1);
-      console.log(result);
-    }
-
-    const issueInfo = async () => {
-      let result = await getGithubIssueInfo(orgValue, repoValue);
-      console.log(result);
-    }
-
-    issueList();
-    issueInfo();
   }
 
   function jumpToPageOnclickEvent(page :number) :void{

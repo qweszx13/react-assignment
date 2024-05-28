@@ -1,19 +1,19 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { type GithubIssueInterface } from '../services/githubApi';
+import { type GithubIssueInfoInterface } from '../services/githubApi';
 
 interface InfoState {
-  value :GithubIssueInterface;
+  value :GithubIssueInfoInterface;
 }
 
 const initialState :InfoState = {
-  value : [],
+  value :{} as GithubIssueInfoInterface
 }
 
 const infoSlice = createSlice({
   name: 'githubInfo',
   initialState,
   reducers:{
-    setInfo: (state, action : PayloadAction<GithubIssueInterface>) => {
+    setInfo: (state, action : PayloadAction<GithubIssueInfoInterface>) => {
       state.value = action.payload
       console.log(state.value);
     }
