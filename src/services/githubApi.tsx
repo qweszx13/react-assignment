@@ -1,6 +1,6 @@
 import { Octokit } from 'octokit';
 
-export const LIST_ITEM_COUNT = 25;
+export const LIST_ITEM_COUNT :number = 25;
 
 const octokit = new Octokit({
   auth: process.env.REACT_APP_GITHUB_API
@@ -15,19 +15,9 @@ export const getGithubFacebookList = async (page :number) =>{
     per_page: LIST_ITEM_COUNT,
   });
   
-  console.log(result); 
   return result;
 }
 
-export const getGithubFacebookInfo = async () => {
-  const result = await octokit.request("GET /repos/{owner}/{repo}",{
-    owner: "facebook",
-    repo: "react"
-  })
-
-  console.log(result);
-  return result
-}
 // Octokit-Libraries-Owner,Repository,Pageを引数として使った場合
 export const getGithubIssueList = async (owner :string, repo :string, page :number) =>{
   const response = await octokit.request("GET /repos/{owner}/{repo}/issues", {
@@ -42,7 +32,7 @@ export const getGithubIssueList = async (owner :string, repo :string, page :numb
   })
 
   if(typeof response === "undefined" ){
-    console.log("void"); 
+    console.log("Page undefiend"); 
   }else{
     return response;
   }
@@ -61,7 +51,7 @@ export const getGithubIssueInfo = async (owner :string, repo :string) => {
   })
 
   if(typeof response === "undefined" ){
-    console.log("void"); 
+    console.log("Page undefined"); 
   }else{
     return response;
   }

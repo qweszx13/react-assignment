@@ -15,7 +15,6 @@ const infoSlice = createSlice({
   reducers:{
     setInfo: (state, action : PayloadAction<GithubIssueInfoInterface>) => {
       state.value = action.payload
-      console.log(state.value);
     }
   }
 })

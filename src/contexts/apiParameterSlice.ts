@@ -19,11 +19,9 @@ const apiParameterSlice = createSlice({
     setRepoParameter: (state, action : PayloadAction<{org :string,repo :string}>) => {
       state.org = action.payload.org;
       state.repo = action.payload.repo;
-      console.log("*set Repo* => org set =",state.org,"/repo set = ",state.repo,"/page set = ",state.page);
     },
     setPageParameter: (state, action : PayloadAction<number>) => {
       state.page = action.payload;
-      console.log("*set Page* => org set =",state.org,"/repo set = ",state.repo,"/page set = ",state.page);
     }
   }
 })

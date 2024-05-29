@@ -1,7 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
-import listReducer from "./listSlice";
-import infoReducer from "./infoSlice";
-import apiParameterReducer from "./apiParameterSlice";
+import listReducer from "../listSlice";
+import infoReducer from "../infoSlice";
+import apiParameterReducer from "../apiParameterSlice";
 
 const store = configureStore({
   reducer: {

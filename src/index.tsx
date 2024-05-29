@@ -1,6 +1,6 @@
 import ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
-import store from './contexts/store';
+import store from './contexts/store/store';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 

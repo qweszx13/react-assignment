@@ -1,15 +1,17 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { setRepoParameter,setPageParameter } from "../contexts/apiParameterSlice";
+import styles from "../styles/scss/home-header.module.scss"
+import { Dispatch, UnknownAction } from "redux";
 
 
 export default function HomeHeader(){
-  const [issuePageNumberValue, setIssuePageNumber] = useState<number>(1);
+  const [issuePageNumberValue, setIssuePageNumber] = useState(1);
   const [orgValue, setOrgValue] = useState<string>("");
   const [repoValue, setRepoValue] = useState<string>("");
 
   const nanIsOne = (value :string) :number => isNaN(parseInt(value)) || parseInt(value) <= 0 ? 1 : parseInt(value);
-  const dispatch = useDispatch();
+  const dispatch :Dispatch<UnknownAction>= useDispatch();
 
   function loadRepoOnclickEvent(orgValue :string, repoValue :string) :void{
     dispatch(setRepoParameter({org:orgValue,repo:repoValue}));
@@ -18,38 +20,28 @@ export default function HomeHeader(){
   function jumpToPageOnclickEvent(page :number) :void{
     dispatch(setPageParameter(page));
   }
-  
-  const buttonStyle :{} = {
-    backgroundColor:"#0875E2",
-    border:"none",
-    height:"25px",
-    width:"100px",
-    borderRadius:"3px",
-    color:"white",
-  }
-  
 
   return(
-    <header>
+    <header className={styles.wrapper}>
       <div>
-        <label style={{margin:"0px 10px"}}>
+        <label>
           Org :
-          <input placeholder="Org" type="text" style={{margin:"0px 10px"}} onChange={(e)=>setOrgValue(e.target.value)}/>
+          <input placeholder="Org" type="text" onChange={(e)=>setOrgValue(e.target.value)}/>
         </label>
         <label>
           Repo :
-          <input placeholder="Repo" type="text" style={{margin:"0px 10px"}} onChange={(e)=>setRepoValue(e.target.value)}/>
+          <input placeholder="Repo" type="text" onChange={(e)=>setRepoValue(e.target.value)}/>
         </label>
-        <button style={buttonStyle} onClick={()=>{loadRepoOnclickEvent(orgValue, repoValue)}}>
+        <button onClick={()=>{loadRepoOnclickEvent(orgValue, repoValue)}}>
           Load Repo
         </button>
       </div>
       <div>
         <label>
           Issue Page :
-        <input placeholder="Issues Page ex)1,2,3" type="number" style={{margin:"0px 10px"}} onChange={(e)=>setIssuePageNumber(nanIsOne(e.target.value))}/>
+        <input placeholder="Issues Page ex)1,2,3" type="number" onChange={(e)=>setIssuePageNumber(nanIsOne(e.target.value))}/>
         </label>
-        <button style={buttonStyle} onClick={()=>{jumpToPageOnclickEvent(issuePageNumberValue)}}>
+        <button onClick={()=>{jumpToPageOnclickEvent(issuePageNumberValue)}}>
           Jump to Page
         </button>
       </div>

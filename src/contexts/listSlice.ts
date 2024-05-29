@@ -15,7 +15,6 @@ const listSlice = createSlice({
   reducers:{
     setList: (state, action : PayloadAction<GithubIssueInterface>) => {
       state.value = action.payload
-      console.log(state.value);
     }
   }
 })
