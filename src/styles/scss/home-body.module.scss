@@ -1,0 +1,62 @@
+.title h1 {
+  font-size: 2em; 
+  font-weight: 300;
+}
+
+.content_wrapper {
+  width: 780px;
+  height: 170px;
+  padding: 16px 8px;
+  display: flex;
+  border-bottom: 1px solid #E2E2E2;
+}
+.content_wrapper .user_info {
+  text-align: center;
+  width: 10%; 
+  color: #9C9C9C;
+}
+.content_wrapper .user_info img{
+  width: 35px; 
+  height: 35px;
+  border-radius: 17.5px; 
+  border: 1px solid #E2E2E2;
+}
+.content_wrapper .user_info div{
+  font-size: 12px;
+  word-wrap: break-word;
+}
+
+.content_wrapper .issue_info {
+  width: 90%; 
+}
+.content_wrapper .issue_info p {
+  display: -webkit-box; 
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+.content_wrapper .issue_info a .issue_number {
+  margin-right: 10px;
+}
+.content_wrapper .issue_info a .issue_title {
+  color: black;
+  font-weight: bold;
+}
+.content_wrapper .issue_info .issue_lable {
+  border: 1px solid #ccc;
+  background-color: #343D43;
+  color: #BED9DA;
+  border-radius: 5px; 
+  display: inline-block;
+  padding: 0px 5px;
+  margin-right: 5px;
+  padding-bottom: 3px;
+
+  &:hover{
+    background-color:#ccc;
+    color: black;
+  }
+}
+.content_wrapper .issue_info .issue_lable span {
+  font-size: .65rem;
+}
