@@ -44,6 +44,9 @@ export default function HomeHeader(){
         <button onClick={()=>{jumpToPageOnclickEvent(issuePageNumberValue)}}>
           Jump to Page
         </button>
+        <div data-testid="error-message">
+          error message sample
+        </div>
       </div>
     </header>
   )

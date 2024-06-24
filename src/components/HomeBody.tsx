@@ -38,8 +38,7 @@ export default function HomeBody() {
           {openIssuesCount} Open issues for {apiParameter.org}/{apiParameter.repo}
         </h1>
       </div>
-      {issueInforomations.map((data) => {
-        return (
+      {issueInforomations.map((data) => (
           <div key={`list-${data.id}`} className={styles.content_wrapper}>
             <a href="##" className={styles.user_info}>
               <img src={data?.user?.avatar_url} alt={+"ID is " + data!.user!.login}/>
@@ -66,7 +65,7 @@ export default function HomeBody() {
             </div>
           </div>
         )
-      })}
+      )}
       <Pagination></Pagination>
     </div>
   )
