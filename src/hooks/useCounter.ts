@@ -4,7 +4,7 @@ type CountDown = () => void
 type CountUp = () => void
 
 type Feature = {
-    // count: number
+    count: number
     countDown: CountDown
     countUp: CountUp
 }
@@ -15,7 +15,7 @@ export const useCounter = (): Feature => {
     const countDown = () => setValue(previous => previous - 1)
 
     return ({
-        // count,
+        count,
         countDown,
         countUp,
     })
