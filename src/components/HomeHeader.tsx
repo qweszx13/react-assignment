@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { setRepoParameter,setPageParameter } from "../contexts/apiParameterSlice";
 import styles from "../styles/scss/home-header.module.scss"
 import { Dispatch, UnknownAction } from "redux";
+import {parse} from "node:url";
 
 // // HomeHeader => ロジックと見た目を持ったコンポーネント
 
@@ -72,13 +73,56 @@ import { Dispatch, UnknownAction } from "redux";
 //   return <Counter count={count} handleClick={handleClick} />
 // }
 
+type PositiveNumber = {
+  value: number
+}
+
+
+type Feature = [
+  issuePageNumber: PositiveNumber,
+  setIssuePageNumber: (newValue: PositiveNumber) => void,
+]
+type Parameter = {
+  initialState: number
+}
+const useIssuesPageNumber = ({ initialState }: Parameter): Feature => {
+
+}
+
+// PositiveNumber | null -> PositiveNumber | PositiveNumber(1)
+const getOrElse = <A,>(nullable: A | null, defaultValue: A): A => nullable === null ? defaultValue : nullable
+
+
+// string -> PositiveNumber, string -> not PositiveNumber 1
+const parsePositiveNumber = (value: string): PositiveNumber => {
+  // string -> PositiveNumber | null
+  // const nanIsOne = (value: string): number => isNaN(parseInt(value)) || parseInt(value) <= 0 ? 1 : parseInt(value);
+  const parseAsPositiveNumber = (value: string): PositiveNumber | null => {
+    const result = parseInt(value)
+
+    positiveResult = { value: parseInt(value) }
+
+    switch ()
+
+    return parseInt(value) > 1 ?  : null;
+  }
+
+  const maybePositiveNumber = parseAsPositiveNumber(value)
+
+  return getOrElse(maybePositiveNumber, { value: 1 })
+}
+
+
+// string -> PositiveNumber, string -> not PositiveNumber 1
+const nanIsOne = (value: string): number => isNaN(parseInt(value)) || parseInt(value) <= 0 ? 1 : parseInt(value);
 
 // 1. 見た目からロジックを抽出する
 // 2. どう的な値を引数として受け取れる形にする
 // 3. ロジックをcustomHookにする
 // 4. customHookと見た目を合成する
 export default function HomeHeader(){
-  const [issuePageNumberValue, setIssuePageNumber] = useState(1);
+  // const [issuePageNumberValue, setIssuePageNumber] = useState(1);
+  const [value, setValue] = useIssuesPageNumber(1)
   const [orgValue, setOrgValue] = useState<string>("");
   const [repoValue, setRepoValue] = useState<string>("");
 
@@ -98,7 +142,41 @@ export default function HomeHeader(){
 
   const handleChangeRepo = (e: ChangeEvent<HTMLInputElement>) => setRepoValue(e.target.value);
 
-  const handleChangePageNumber = (e: ChangeEvent<HTMLInputElement>) => setIssuePageNumber(nanIsOne(e.target.value));
+  const parseAsPositiveNumber = (value: string): PositiveNumber => {
+
+  }
+  // const handleChangePageNumber = (e: ChangeEvent<HTMLInputElement>) => setIssuePageNumber(nanIsOne(e.target.value));
+  const handleChangePageNumber = (e: ChangeEvent<HTMLInputElement>) => {
+    setValue(nanIsOne(e.target.value));
+    setValue(parseInt(e.target.value));
+    setValue(parseAsPositiveNumber(e.target.value));
+    setValue(parseAsPositiveNumber(e.target.value));
+  }
+
+  class A {
+    public int getValue() {
+
+    }
+  }
+
+  class B {
+    public int getValue() {
+
+    }
+  }
+
+  class Util {
+    public void printA(A: a) {}
+  }
+
+  final var a = new A()
+  final var b = new B()
+  final var util = new Util()
+
+  util.printA(a)
+
+  util.printA(b)
+
 
   const handleClickeLoadRepository = () => loadRepoOnclickEvent(orgValue, repoValue);
 
